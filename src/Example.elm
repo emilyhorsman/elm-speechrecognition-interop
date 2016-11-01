@@ -38,19 +38,15 @@ getLatestResult event =
     event.results |> Array.fromList |> Array.get event.resultIndex
 
 
+getItemsFromResult : Maybe Speech.Result -> Maybe (List Speech.Alternative)
+getItemsFromResult result =
+    result |> Maybe.map .items |> Maybe.map reverse
+
+
 getTranscript : Maybe Speech.Result -> Maybe String
 getTranscript result =
-    case result of
-        Nothing ->
-            Nothing
-
-        Just result ->
-            case head (reverse result.items) of
-                Nothing ->
-                    Nothing
-
-                Just item ->
-                    Just (log "thing" item.transcript)
+    Maybe.andThen (getItemsFromResult result) head
+        |> Maybe.map .transcript
 
 
 latestTranscript : Speech.Event -> Maybe String
@@ -75,9 +71,4 @@ subscriptions model =
 
 view : Model -> Html Msg
 view model =
-    case model.text of
-        Nothing ->
-            text "Not recognized"
-
-        Just t ->
-            text t
+    text <| Maybe.withDefault "Not recognized" model.text
