@@ -1,0 +1,14 @@
+<span id="example"></span>
+
+<script src="SpeechRecognition.js"></script>
+<script src="example.js"></script>
+<script>
+    var app = Elm.Example.fullscreen();
+
+    SpeechRecognitionInterop.start(
+        app.ports.events.send,
+        {
+            grammar: SpeechRecognitionInterop.createGrammar(['hey', 'siri']),
+        }
+    )
+</script>
