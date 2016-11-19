@@ -50,8 +50,15 @@ getItemsFromResult result =
 
 getTranscript : Maybe Speech.Result -> Maybe String
 getTranscript result =
-    Maybe.andThen (getItemsFromResult result) head
-        |> Maybe.map .transcript
+    let
+        formatConfidence confidence =
+            confidence * 100 |> round |> toString
+
+        formatResult result =
+            result.transcript ++ " @ " ++ formatConfidence result.confidence ++ "%"
+    in
+        Maybe.andThen (getItemsFromResult result) head
+            |> Maybe.map formatResult
 
 
 latestTranscript : Speech.Event -> Maybe String
