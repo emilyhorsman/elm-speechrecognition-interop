@@ -5,10 +5,14 @@
 <script>
     var app = Elm.Example.fullscreen();
 
+    app.ports.state.subscribe(function(cmd) {
+        console.log('Command received!', cmd)
+    })
+
     SpeechRecognitionInterop.start(
         app.ports.events.send,
         {
-            grammar: SpeechRecognitionInterop.createGrammar(['hey', 'siri']),
+            grammar: SpeechRecognitionInterop.createGrammar(['hey', 'computer']),
         }
     )
 </script>

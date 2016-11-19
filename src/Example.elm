@@ -1,7 +1,8 @@
 port module Example exposing (..)
 
-import Html exposing (Html, text)
+import Html exposing (Html, text, button, div)
 import Html.App as App
+import Html.Events exposing (onClick)
 import String
 import Array
 import Maybe
@@ -31,6 +32,7 @@ init =
 
 type Msg
     = Change Speech.Event
+    | Start
 
 
 getLatestResult : Speech.Event -> Maybe Speech.Result
@@ -60,6 +62,12 @@ update msg model =
         Change speechEvent ->
             ( { model | text = latestTranscript speechEvent }, Cmd.none )
 
+        Start ->
+            ( model, state "start" )
+
+
+port state : String -> Cmd msg
+
 
 port events : (Speech.Event -> msg) -> Sub msg
 
@@ -71,4 +79,8 @@ subscriptions model =
 
 view : Model -> Html Msg
 view model =
-    text <| Maybe.withDefault "Not recognized" model.text
+    div
+        []
+        [ text <| Maybe.withDefault "Not recognized" model.text
+        , button [ onClick Start ] [ text "Start" ]
+        ]
