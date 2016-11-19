@@ -5,14 +5,15 @@
 <script>
     var app = Elm.Example.fullscreen();
 
-    app.ports.state.subscribe(function(cmd) {
-        console.log('Command received!', cmd)
-    })
+    var recognition = SpeechRecognitionInterop.init(app.ports.events.send)
 
-    SpeechRecognitionInterop.start(
-        app.ports.events.send,
-        {
-            grammar: SpeechRecognitionInterop.createGrammar(['hey', 'computer']),
+    app.ports.state.subscribe(function(cmd) {
+        if (cmd === 'start') {
+            recognition.start()
+        } else if (cmd === 'stop') {
+            recognition.abort()
+        } else {
+            console.warn('Unrecognized state command received from Elm', cmd)
         }
-    )
+    })
 </script>

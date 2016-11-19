@@ -22,17 +22,20 @@ main =
 
 type alias Model =
     { text : Maybe String
+    , stateLabel : String
+    , stateMsg : Msg
     }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model Nothing, Cmd.none )
+    ( Model Nothing "Start" Start, Cmd.none )
 
 
 type Msg
     = Change Speech.Event
     | Start
+    | Stop
 
 
 getLatestResult : Speech.Event -> Maybe Speech.Result
@@ -63,7 +66,10 @@ update msg model =
             ( { model | text = latestTranscript speechEvent }, Cmd.none )
 
         Start ->
-            ( model, state "start" )
+            ( { model | stateMsg = Stop, stateLabel = "Stop" }, state "start" )
+
+        Stop ->
+            ( { model | stateMsg = Start, stateLabel = "Start" }, state "stop" )
 
 
 port state : String -> Cmd msg
@@ -81,6 +87,6 @@ view : Model -> Html Msg
 view model =
     div
         []
-        [ text <| Maybe.withDefault "Not recognized" model.text
-        , button [ onClick Start ] [ text "Start" ]
+        [ button [ onClick model.stateMsg ] [ text model.stateLabel ]
+        , Maybe.withDefault "Not recognized" model.text |> text
         ]

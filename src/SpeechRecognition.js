@@ -52,7 +52,7 @@
         })
     }
 
-    module.start = function(callback, opts) {
+    module.init = function(callback, opts) {
         var attrs = Object.assign({
             continuous: true,
             lang: 'en-US',
@@ -69,7 +69,6 @@
             'result',
             module.handleEvent.bind(null, callback)
         )
-        recognition.start()
         return recognition
     }
 
