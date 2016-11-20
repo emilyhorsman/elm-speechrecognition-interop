@@ -1,12 +1,13 @@
 {
     "version": "1.0.0",
-    "summary": "helpful summary of your project, less than 80 characters",
-    "repository": "https://github.com/user/project.git",
+    "summary": "Types for a SpeechRecognition interop ports module",
+    "repository": "https://github.com/emilyhorsman/elm-speechrecognition-interop.git",
     "license": "BSD3",
     "source-directories": [
-        "."
+        ".",
+        "src"
     ],
-    "exposed-modules": [],
+    "exposed-modules": ["SpeechRecognitionInterop"],
     "dependencies": {
         "elm-lang/core": "4.0.5 <= v < 5.0.0",
         "elm-lang/html": "1.1.0 <= v < 2.0.0"
